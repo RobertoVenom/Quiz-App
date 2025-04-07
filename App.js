@@ -1,45 +1,115 @@
-// App.js
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Question from './src/components/Question';
-import Summary from './src/components/Summary';
-
-// Example JSON data for quiz questions
-const questions = [
-  {
-    prompt: 'This is the question...',
-    type: 'multiple-choice',
-    choices: ['choice 1', 'choice 2', 'choice 3', 'choice 4'],
-    correct: 0, // Correct answer index
-  },
-  {
-    prompt: 'This is another question...',
-    type: 'multiple-answer',
-    choices: ['choice 1', 'choice 2', 'choice 3', 'choice 4'],
-    correct: [0, 2], // Correct answer indices
-  },
-  {
-    prompt: 'This is the third question...',
-    type: 'true-false',
-    choices: ['choice 1', 'choice 2'],
-    correct: 1, // Correct answer index
-  },
-];
+import { Button, Text } from 'react-native';
+import { ButtonGroup } from 'react-native-elements';
+import Question from './Question';
+import Summary from './Summary';
 
 const Stack = createStackNavigator();
 
-export default function App() {
+const data = [
+  {
+    prompt: "This is the first question...",
+    type: "multiple-choice",
+    choices: ["Choice 1", "Choice 2", "Choice 3", "Choice 4"],
+    correct: 0,
+  },
+  {
+    prompt: "This is the second question...",
+    type: "multiple-answer",
+    choices: ["Choice 1", "Choice 2", "Choice 3", "Choice 4"],
+    correct: [0, 2],
+  },
+  {
+    prompt: "This is the third question...",
+    type: "true-false",
+    choices: ["True", "False"],
+    correct: 1,
+  },
+];
+
+const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Question">
-        <Stack.Screen name="Question">
-          {(props) => <Question {...props} questions={questions} index={0} />}
-        </Stack.Screen>
-        <Stack.Screen name="Summary">
-          {(props) => <Summary {...props} questions={questions} />}
-        </Stack.Screen>
+      <Stack.Navigator>
+        <Stack.Screen name="Question" component={QuestionScreen} />
+        <Stack.Screen name="Summary" component={Summary} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+const QuestionScreen = ({ navigation, route }) => {
+  const { index = 0 } = route.params || {};
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const question = data[index];
+
+  const handleNextQuestion = () => {
+    if (index + 1 < data.length) {
+      navigation.navigate('Question', { index: index + 1 });
+    } else {
+      navigation.navigate('Summary', { answers: data });
+    }
+  };
+
+  return (
+    <>
+      <Text>{question.prompt}</Text>
+      <ButtonGroup
+        onPress={(selectedIndex) => setSelectedAnswer(selectedIndex)}
+        selectedIndex={selectedAnswer}
+        buttons={question.choices}
+        containerStyle={{ height: 200 }}
+      />
+      <Button testID="next-question" title="Next Question" onPress={handleNextQuestion} />
+    </>
+  );
+};
+
+const Summary = ({ route }) => {
+  const { answers } = route.params;
+  let score = 0;
+
+  const renderAnswers = (question, idx) => {
+    let userAnswer = question.userAnswer;
+    let correctAnswer = question.correct;
+
+    if (Array.isArray(correctAnswer)) {
+      correctAnswer = correctAnswer.sort().join(',');
+    }
+
+    let isCorrect = userAnswer && userAnswer === correctAnswer;
+    return (
+      <Text key={idx}>
+        {question.prompt} 
+        {"\n"}
+        {question.choices.map((choice, idx) => {
+          const isSelected = userAnswer.includes(idx);
+          const isCorrectChoice = correctAnswer.includes(idx);
+          return (
+            <Text
+              key={idx}
+              style={{
+                fontWeight: isSelected && isCorrectChoice ? 'bold' : 'normal',
+                textDecorationLine: !isCorrectChoice ? 'line-through' : 'none',
+              }}>
+              {choice}
+            </Text>
+          );
+        })}
+        {"\n"}
+        <Text>{isCorrect ? "Correct!" : "Incorrect"}</Text>
+      </Text>
+    );
+  };
+
+  return (
+    <>
+      <Text testID="total">Score: {score}</Text>
+      {answers.map((question, idx) => renderAnswers(question, idx))}
+    </>
+  );
+};
+
+export default App;
