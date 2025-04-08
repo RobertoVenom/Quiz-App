@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Multiple Choice Quiz</title>
+</head>
+<body>
+
+    <h1>Simple Multiple Choice Quiz</h1>
+
+    <form id="quiz-form">
+
+        <div class="question">
+            <p>What is the capital of France?</p>
+            <input type="radio" name="question1" value="Paris" id="q1_a1">
+            <label for="q1_a1">Paris</label><br>
+            <input type="radio" name="question1" value="London" id="q1_a2">
+            <label for="q1_a2">London</label><br>
+            <input type="radio" name="question1" value="Berlin" id="q1_a3">
+            <label for="q1_a3">Berlin</label><br>
+            <input type="radio" name="question1" value="Rome" id="q1_a4">
+            <label for="q1_a4">Rome</label><br>
+        </div>
+
+        <div class="question">
+            <p></p>
+            <input type="radio" name="question2" value="3" id="q2_a1">
+            <label for="q2_a1">3</label><br>
+            <input type="radio" name="question2" value="4" id="q2_a2">
+            <label for="q2_a2">4</label><br>
+            <input type="radio" name="question2" value="5" id="q2_a3">
+            <label for="q2_a3">5</label><br>
+            <input type="radio" name="question2" value="6" id="q2_a4">
+            <label for="q2_a4">6</label><br>
+        </div>
+
+        <div class="question">
+          <p>True or False</p>
+          <input type="radio" name="question3" value="True" id="q3_a1">
+          <label for="q3-a1">True</label>
+          <input type="radio" name="question3" value="False" id="q3_a2">
+          <label for="q3-a2">False</label>
+        </div>
+      
+        <button type="button" onclick="checkAnswers()">Check Answers</button>
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+        function checkAnswers() {
+            let score = 0;
+            const form = document.getElementById('quiz-form');
+            const resultsDiv = document.getElementById('results');
+
+            // Question 1
+            const q1Answer = form.querySelector('input[name="question1"]:checked');
+            if (q1Answer && q1Answer.value === "Paris") {
+                score++;
+            }
+
+            // Question 2
+            const q2Answer = form.querySelector('input[name="question2"]:checked');
+            if (q2Answer && q2Answer.value === "4,5") {
+                score++;
+            }
+
+            //Question 3
+            const q3Answer = form.querySelector('input[name="question3"]:checked');
+            if (q3Answer && q3Answer.value === "True"){
+              score++;
+            }
+
+            resultsDiv.innerHTML = `<p>You scored ${score} out of 2.</p>`;
+        }
+    </script>
+
+</body>
+</html>
