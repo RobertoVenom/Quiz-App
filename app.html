@@ -10,19 +10,19 @@
     <form id="quiz-form">
 
         <div class="question">
-            <p>What is the capital of France?</p>
-            <input type="radio" name="question1" value="Paris" id="q1_a1">
-            <label for="q1_a1">Paris</label><br>
-            <input type="radio" name="question1" value="London" id="q1_a2">
-            <label for="q1_a2">London</label><br>
-            <input type="radio" name="question1" value="Berlin" id="q1_a3">
-            <label for="q1_a3">Berlin</label><br>
-            <input type="radio" name="question1" value="Rome" id="q1_a4">
-            <label for="q1_a4">Rome</label><br>
+            <p>What is the best way to start chilling?</p>
+            <input type="radio" name="question1" value="sitting" id="q1_a1">
+            <label for="q1_a1">Sitting</label><br>
+            <input type="radio" name="question1" value="Thinking" id="q1_a2">
+            <label for="q1_a2">Thinking</label><br>
+            <input type="radio" name="question1" value="Napping" id="q1_a3">
+            <label for="q1_a3">Napping</label><br>
+            <input type="radio" name="question1" value="Listen Music" id="q1_a4">
+            <label for="q1_a4">Listen Muisc</label><br>
         </div>
 
         <div class="question">
-            <p></p>
+            <p>How Many classes to take per Semester?</p>
             <input type="radio" name="question2" value="3" id="q2_a1">
             <label for="q2_a1">3</label><br>
             <input type="radio" name="question2" value="4" id="q2_a2">
@@ -34,7 +34,7 @@
         </div>
 
         <div class="question">
-          <p>True or False</p>
+          <p>True or False: Can you check for Questions before submitting?</p>
           <input type="radio" name="question3" value="True" id="q3_a1">
           <label for="q3-a1">True</label>
           <input type="radio" name="question3" value="False" id="q3_a2">
@@ -54,13 +54,13 @@
 
             // Question 1
             const q1Answer = form.querySelector('input[name="question1"]:checked');
-            if (q1Answer && q1Answer.value === "Paris") {
+            if (q1Answer && q1Answer.value === "Napping") {
                 score++;
             }
 
             // Question 2
             const q2Answer = form.querySelector('input[name="question2"]:checked');
-            if (q2Answer && q2Answer.value === "4,5") {
+            if (q2Answer && q2Answer.value === "3,4") {
                 score++;
             }
 
